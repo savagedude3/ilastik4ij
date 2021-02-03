@@ -39,7 +39,7 @@ public class IlastikExportCommand implements Command {
         gd.addMessage("Axis order of the exported data set: 'TZYXC'");
         gd.addStringField("ExportPath", hdf5FilePath, 100);
         gd.addStringField("DatasetName", "data");
-        gd.addStringField("CompressionLevel", "0");
+        gd.addStringField("CompressionLevel (gzip)", "0");
 
         gd.showDialog();
         if (gd.wasCanceled()) return;
