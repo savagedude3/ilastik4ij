@@ -1,7 +1,11 @@
 package org.ilastik.ilastik4ij.executors;
 
 import ij.IJ;
+import ij.ImagePlus;
+import ij.io.FileSaver;
 import net.imagej.ImgPlus;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import org.ilastik.ilastik4ij.hdf5.Hdf5DataSetReader;
@@ -106,7 +110,8 @@ public abstract class AbstractIlastikExecutor {
 
             ImgPlus<T> outputImg = new Hdf5DataSetReader<T>(tempFiles.get(outputTempFile), "exported_data",
                     "tzyxc", logService, statusService).read();
-
+            
+            
             return outputImg;
         } finally {
             deleteTempFiles(tempFiles);
@@ -128,9 +133,9 @@ public abstract class AbstractIlastikExecutor {
 
     private Map<String, String> prepareTempFiles(boolean hasSecondInputImg) throws IOException {
         LinkedHashMap<String, String> tempFiles = new LinkedHashMap<>();
-
-        tempFiles.put(rawInputTempFile, IOUtils.getTemporaryFileName("_in_raw.h5"));
-        tempFiles.put(outputTempFile, IOUtils.getTemporaryFileName("_out.h5"));
+        
+        tempFiles.put(rawInputTempFile, "ilastik4ij_in_raw.h5");
+        tempFiles.put(outputTempFile, "ilastik4ij_out.h5");
 
         if (hasSecondInputImg) {
             tempFiles.put(secondInputTempFile, IOUtils.getTemporaryFileName("_in_2nd.h5"));
@@ -145,8 +150,8 @@ public abstract class AbstractIlastikExecutor {
         for (String tempFilePath : tempFiles.values()) {
             final File tempFile = new File(tempFilePath);
             if (tempFile.exists()) {
-                tempFile.delete();
-                logService.info("Deleted tmp file: " + tempFile);
+                //tempFile.delete();
+                logService.info("Didn't delete tmp file: " + tempFile);
             }
         }
     }
