@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 
-@Plugin(type = Command.class, headless = true, menuPath = "Plugins>ilastik_Syn_Bot>Export HDF5 for Syn_Bot")
+@Plugin(type = Command.class, headless = true, menuPath = "Plugins>Syn_Bot>Export HDF5 for Syn_Bot")
 public class IlastikExportCommand implements Command {
 
     @Parameter

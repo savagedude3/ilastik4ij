@@ -18,7 +18,7 @@ import java.io.File;
  * of this class, that can be requested by every plugin to get these values of
  * shared configuration.
  */
-@Plugin(type = OptionsPlugin.class, menuPath = "Plugins>ilastik_Syn_Bot>Configure ilastik for Syn_Bot")
+@Plugin(type = OptionsPlugin.class, menuPath = "Plugins>Syn_Bot>Configure ilastik for Syn_Bot")
 public class IlastikOptions extends OptionsPlugin {
     private static final String ILASTIK_PATH_WIN = "C:\\\\Program Files\\ilastik-1.3.3\\ilastik.exe";
     private static final String ILASTIK_PATH_LINUX = "/opt/ilastik-1.3.3-Linux/run_ilastik.sh";

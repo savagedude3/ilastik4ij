@@ -19,7 +19,7 @@ import static org.ilastik.ilastik4ij_Syn_Bot.executors.AbstractIlastikExecutor.P
 import java.io.File;
 import java.io.IOException;
 
-@Plugin(type = Command.class, headless = true, menuPath = "Plugins>ilastik_Syn_Bot>Run Autocontext Prediction for Syn_Bot")
+@Plugin(type = Command.class, headless = true, menuPath = "Plugins>Syn_Bot>Run Autocontext Prediction for Syn_Bot")
 public class IlastikAutoContextCommand implements Command {
 
     @Parameter

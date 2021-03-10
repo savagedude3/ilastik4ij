@@ -22,7 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 
-@Plugin(type = Command.class, menuPath = "Plugins>ilastik_Syn_Bot>Import HDF5 for Syn_Bot")
+@Plugin(type = Command.class, menuPath = "Plugins>Syn_Bot>Import HDF5 for Syn_Bot")
 public class IlastikImportCommand implements Command {
     @Parameter
     private LogService logService;
