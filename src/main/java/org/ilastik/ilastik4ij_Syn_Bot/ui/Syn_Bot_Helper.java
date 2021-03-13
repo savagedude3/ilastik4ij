@@ -23,7 +23,6 @@ public class Syn_Bot_Helper implements Command {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 
 		if (IJ.isResultsWindow() == false) {
 			//TODO throw error 
@@ -40,10 +39,16 @@ public class Syn_Bot_Helper implements Command {
 
 		int redCount = redX.length;
 		int greenCount = greenX.length;
+		
+		//the maximum possible number of colocs is the same as the number of
+		//puncta from the channel with the most puncta
+		int maxColocs = Math.max(redCount, greenCount);
+		
+		
 
-		double[] colocX = new double[100000];
-		double[] colocY = new double[100000];
-		double[] colocAreaArray = new double[100000];
+		double[] colocX = new double[maxColocs];
+		double[] colocY = new double[maxColocs];
+		double[] colocAreaArray = new double[maxColocs];
 		int colocCount = 0; 
 
 		//for each red puncta
@@ -59,6 +64,7 @@ public class Syn_Bot_Helper implements Command {
 					colocY[colocCount] = midpos(redY[i], greenY[j]);
 					colocAreaArray[colocCount] = colocA;
 					colocCount = colocCount + 1;
+					
 				}
 			}
 		}
@@ -111,8 +117,9 @@ public class Syn_Bot_Helper implements Command {
 		//a.displayResults(); 
 	}
 
+	
 	public double midpos (double a, double b) {
-		return ((a + b)/2 + 1);
+		return ((a + b)/2.0 + 1.0);
 	}
 
 	//Calculates the intersectional area of two puncta to get the area of the colocalization
@@ -126,7 +133,7 @@ public class Syn_Bot_Helper implements Command {
 			double a = ra * ra;
 			double b = rb * rb;
 
-			double x = (a - b + d * d) / (2 * d);
+			double x = (a - b + d * d) / (2.0 * d);
 			double z = x * x;
 			double y = Math.sqrt(a - z);
 

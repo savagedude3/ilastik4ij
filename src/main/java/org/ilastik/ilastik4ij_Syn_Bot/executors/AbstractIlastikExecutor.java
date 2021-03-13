@@ -135,8 +135,13 @@ public abstract class AbstractIlastikExecutor {
     private Map<String, String> prepareTempFiles(boolean hasSecondInputImg) throws IOException {
         LinkedHashMap<String, String> tempFiles = new LinkedHashMap<>();
         
-        tempFiles.put(rawInputTempFile, "ilastik4ij_in_raw.h5");
-        tempFiles.put(outputTempFile, "ilastik4ij_out.h5");
+       
+        Path ijPath = Paths.get(ij.IJ.getDirectory("ImageJ"));
+        Path rawPath = Paths.get(ijPath.toString(), "ilastik4ij_in_raw.h5");
+        Path outPath = Paths.get(ijPath.toString(), "ilastik4ij_out.h5");
+        tempFiles.put(rawInputTempFile,rawPath.toString());
+        tempFiles.put(outputTempFile, outPath.toString());
+            
 
         if (hasSecondInputImg) {
             tempFiles.put(secondInputTempFile, IOUtils.getTemporaryFileName("_in_2nd.h5"));
