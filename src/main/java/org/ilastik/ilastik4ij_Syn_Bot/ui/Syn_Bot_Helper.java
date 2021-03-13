@@ -40,9 +40,8 @@ public class Syn_Bot_Helper implements Command {
 		int redCount = redX.length;
 		int greenCount = greenX.length;
 		
-		//the maximum possible number of colocs is the same as the number of
-		//puncta from the channel with the most puncta
-		int maxColocs = Math.max(redCount, greenCount);
+		//the maximum possible number of colocs is the sum of the individual puncta
+		int maxColocs = redCount + greenCount;
 		
 		
 
