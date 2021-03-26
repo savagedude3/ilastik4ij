@@ -6,8 +6,10 @@ import org.scijava.plugin.Plugin;
 import ij.IJ;
 
 import ij.measure.ResultsTable;
-import ij.plugin.PlugIn;
 import ij.plugin.filter.Analyzer;
+
+import org.ilastik.ilastik4ij_Syn_Bot.ui.Syn_Bot_Utils.*;
+
 
 /**
  * Main class.
@@ -55,13 +57,13 @@ public class Syn_Bot_Helper implements Command {
 
 			//for each green puncta
 			for (int j = 0; j < greenCount; j++) {
-				double colocA = colocArea(redX[i], redY[i], redR[i], greenX[j], greenY[j], greenR[j]);
-				if (colocA > 0) {
+				Puncta currentPuncta = Syn_Bot_Utils.colocArea(redX[i], redY[i], redR[i], greenX[j], greenY[j], greenR[j]);
+				if (currentPuncta.area > 0) {
 					//stores the x and y coordinates of the colocalized
 					//puncta, using midpos to get an integer
-					colocX[colocCount] = midpos(redX[i], greenX[j]);
-					colocY[colocCount] = midpos(redY[i], greenY[j]);
-					colocAreaArray[colocCount] = colocA;
+					colocX[colocCount] = currentPuncta.x;
+					colocY[colocCount] = currentPuncta.y;
+					colocAreaArray[colocCount] = currentPuncta.area;
 					colocCount = colocCount + 1;
 					
 				}
@@ -114,34 +116,6 @@ public class Syn_Bot_Helper implements Command {
 		rtOut.show("Results");
 		//Analyzer.setResultsTable(rt);
 		//a.displayResults(); 
-	}
-
-	
-	public double midpos (double a, double b) {
-		return ((a + b)/2.0 + 1.0);
-	}
-
-	//Calculates the intersectional area of two puncta to get the area of the colocalization
-	//based on https://www.xarg.org/2016/07/calculate-the-intersection-area-of-two-circles/ 
-	public double colocArea (double xa, double ya, double ra, double xb, double yb, double rb) {
-
-		double d = Math.sqrt(Math.pow((yb - ya), 2) + Math.pow(xb - xa, 2));
-
-		if (d < ra + rb) {
-
-			double a = ra * ra;
-			double b = rb * rb;
-
-			double x = (a - b + d * d) / (2.0 * d);
-			double z = x * x;
-			double y = Math.sqrt(a - z);
-
-			if (d <= Math.abs(rb - ra)) {
-				return Math.PI * Math.min(a, b);
-			}
-			return a * Math.asin(y / ra) + b * Math.asin(y / rb) - y * (x + Math.sqrt(z + b - a));
-		}
-		return 0;
 	}
 
 }
