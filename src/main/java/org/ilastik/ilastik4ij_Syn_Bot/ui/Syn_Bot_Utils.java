@@ -37,7 +37,7 @@ public class Syn_Bot_Utils {
 		        
 		        //if circles completely overlap, coloc is the smaller circle
 		        if (d <= Math.abs(rb - ra)) {
-				    if (ra < rb){
+				    if (ra <= rb){
 				        currentPuncta.area = Math.PI * a;
 					    currentPuncta.x = xa;
 					    currentPuncta.y = ya;

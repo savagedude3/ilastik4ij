@@ -8,6 +8,8 @@ import ij.IJ;
 import ij.measure.ResultsTable;
 import ij.plugin.filter.Analyzer;
 
+import java.util.Arrays;
+
 import org.ilastik.ilastik4ij_Syn_Bot.ui.Syn_Bot_Utils.*;
 
 /**
@@ -125,7 +127,7 @@ public class Syn_Bot_Triple implements Command {
 	
 	public static Puncta tripleColoc(double xa, double ya, double ra, double xb, double yb, double rb, double xc, double yc, double rc) {
 		
-	    Puncta colocABC = new Puncta(0, 0, 0);
+Puncta colocABC = new Puncta(0, 0, 0);
 	    
 	    double d_AB = Math.sqrt(Math.pow((yb - ya), 2) + Math.pow(xb - xa, 2));
 		double d_AC = Math.sqrt(Math.pow((yc - ya), 2) + Math.pow(xc - xa, 2));
@@ -137,31 +139,83 @@ public class Syn_Bot_Triple implements Command {
 		    if (d_AC < ra + rc){
 		        //if green and blue coloc
 		        if (d_BC < rb + rc){
-		        	
-		        	Puncta colocAB = Syn_Bot_Utils.colocArea(xa, ya, ra, xb, yb, rb);
+		            
+		            Puncta colocAB = Syn_Bot_Utils.colocArea(xa, ya, ra, xb, yb, rb);
 		            Puncta colocAC = Syn_Bot_Utils.colocArea(xa, ya, ra, xc, yc, rc);
         			Puncta colocBC = Syn_Bot_Utils.colocArea(xb, yb, rb, xc, yc, rc);
-        			System.out.println("colocAB is: " + colocAB.x + ", " + colocAB.y + " area: " + colocAB.area);
-		            System.out.println("colocAC is: " + colocAC.x + ", " + colocAC.y + " area: " + colocAC.area);
-		            System.out.println("colocBC is: " + colocBC.x + ", " + colocBC.y + " area: " + colocBC.area);
+        			//System.out.println("colocAB is: " + colocAB.x + ", " + colocAB.y + " area: " + colocAB.area);
+		            //System.out.println("colocAC is: " + colocAC.x + ", " + colocAC.y + " area: " + colocAC.area);
+		            //System.out.println("colocBC is: " + colocBC.x + ", " + colocBC.y + " area: " + colocBC.area);
 		
         			//draw line between center of A and colocBC
         			//line is y = slope * x + intercept 
         			//slope is deltaY/deltaX
         			//Point-Slope equation y - y1 = slope * (x - x1)
         			//rearrange Point-Slope and set y to 0 for intercept
-        			double slopeABC = (colocBC.y - ya)/(colocBC.x - xa);
-        			double interceptABC = slopeABC*(-xa) + ya;
-        			double slopeBAC = (colocAC.y - yb)/(colocAC.x - xb);
-        			double interceptBAC = slopeBAC*(-xb) + yb;
-        			double slopeCAB = (colocAB.y - yc)/(colocAB.x - xc);
-        			double interceptCAB = slopeCAB*(-xc) + yc;
         			
-        			colocABC.x = (interceptBAC - interceptABC)/(slopeABC - slopeBAC);
-        			colocABC.y = slopeABC * colocABC.x + interceptABC;
+        			//boolean to track if the value was correctly calculated
+        			boolean boolABC = false;
+        			boolean boolBAC = false;
+        			boolean boolCAB = false;
+        			double slopeABC = 0;
+        			double interceptABC = 0;
+        			double slopeBAC = 0;
+        			double interceptBAC = 0;
+        			double slopeCAB = 0;
+        			double interceptCAB = 0;
+        			
+        			if (colocBC.x - xa != 0){
+            			slopeABC = (colocBC.y - ya)/(colocBC.x - xa);
+            			interceptABC = slopeABC*(-xa) + ya;
+            			boolABC = true;
+        			}
+        			
+        			if (colocAC.x - xb != 0){
+            			slopeBAC = (colocAC.y - yb)/(colocAC.x - xb);
+            			interceptBAC = slopeBAC*(-xb) + yb;
+            			boolBAC = true;
+        			}
+        			
+        			if (colocAB.x - xc != 0){
+            			slopeCAB = (colocAB.y - yc)/(colocAB.x - xc);
+            			interceptCAB = slopeCAB*(-xc) + yc;
+            			boolCAB = true;
+        			}
+        			
+        			if (boolBAC && boolABC) {
+            			colocABC.x = (interceptBAC - interceptABC)/(slopeABC - slopeBAC);
+            			colocABC.y = slopeABC * colocABC.x + interceptABC;
+        			}
+        			
+        			//3 puncta lined up vertically
+        			else {
+        			    colocABC.x = colocAB.x;
+        			    //calculate median y value
+        			    double[] y_vals = {colocAB.y, colocBC.y, colocAC.y};
+        			    Arrays.sort(y_vals);
+        			    //the middle value of the sorted array is the median
+        			    colocABC.y = y_vals[1];
+        			}
+        			
+        			if (colocAC.x - xb == 0){
+            			colocABC.x = xb;
+        			}
+        			
         			//not sure how to calculate tripleColoc area
         			//setting it to 1 so we can easily differentiate from non-colocs
         			colocABC.area = 1;
+        			
+        			/*
+        			System.out.println("boolABC is: " + boolABC);
+        			System.out.println("slopeABC is: " + slopeABC);
+        			System.out.println("interceptABC is: " + interceptABC);
+        			System.out.println("boolBAC is: " + boolBAC);
+        			System.out.println("slopeBAC is: " + slopeBAC);
+        			System.out.println("interceptBAC is: " + interceptBAC);
+        			System.out.println("boolCAB is: " + boolCAB);
+        			System.out.println("slopeCAB is: " + slopeCAB);
+        			System.out.println("interceptCAB is: " + interceptCAB);
+        			*/
 		        }
 		    }
 		}
