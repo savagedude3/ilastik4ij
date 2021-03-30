@@ -205,6 +205,25 @@ Puncta colocABC = new Puncta(0, 0, 0);
         			//setting it to 1 so we can easily differentiate from non-colocs
         			colocABC.area = 1;
         			
+        			//For some reasone there are still a small number of puncta that
+        			//get to this point with coordinates that include inifinity or are
+        			//not a number. Setting these to the median coloc
+        			
+        			if (colocABC.x == Double.POSITIVE_INFINITY || colocABC.x == Double.NEGATIVE_INFINITY || colocABC.x == Double.NaN) {
+        			    //calculate median y value
+        			    double[] x_vals = {colocAB.x, colocBC.x, colocAC.x};
+        			    Arrays.sort(x_vals);
+        			    //the middle value of the sorted array is the median
+        			    colocABC.x = x_vals[1];
+        			}
+        			if (colocABC.y == Double.POSITIVE_INFINITY || colocABC.y == Double.NEGATIVE_INFINITY || colocABC.y == Double.NaN) {
+        			    //calculate median y value
+        			    double[] y_vals = {colocAB.y, colocBC.y, colocAC.y};
+        			    Arrays.sort(y_vals);
+        			    //the middle value of the sorted array is the median
+        			    colocABC.y = y_vals[1];
+        			}
+        			
         			/*
         			System.out.println("boolABC is: " + boolABC);
         			System.out.println("slopeABC is: " + slopeABC);
