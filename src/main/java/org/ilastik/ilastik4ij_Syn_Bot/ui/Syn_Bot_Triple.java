@@ -4,7 +4,7 @@ import org.scijava.command.Command;
 import org.scijava.plugin.Plugin;
 
 import ij.IJ;
-
+import ij.gui.ProgressBar;
 import ij.measure.ResultsTable;
 import ij.plugin.filter.Analyzer;
 
@@ -59,6 +59,11 @@ public class Syn_Bot_Triple implements Command {
 
 		//for each red puncta
 		for (int i = 0; i < redCount; i++) {
+			
+			double currentProgress = i/(redCount*1.0) * 100;
+			int intProgress = (int) currentProgress;
+			System.out.println(intProgress + "%");
+			
 
 			//for each green puncta
 			for (int j = 0; j < greenCount; j++) {
